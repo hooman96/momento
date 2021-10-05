@@ -1,0 +1,20 @@
+@font-face {
+    font-family: "LotaGrotesque";
+    src: local("LotaGrotesqueRegular"),
+      url("../assets/fonts/LotaGrotesqueRegular.otf") format("truetype");
+    font-weight: normal;
+  }
+
+  @font-face {
+    font-family: "LotaGrotesque";
+    src: local("LotaGrotesqueBold"),
+      url("../assets/fonts/LotaGrotesqueBold.otf") format("truetype");
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: "LotaGrotesque";
+    src: local("LotaGrotesqueSemiBold"),
+      url("../assets/fonts/LotaGrotesqueSemiBold.otf") format("truetype");
+    font-weight: 500;
+  }
