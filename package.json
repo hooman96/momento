@@ -40,8 +40,8 @@
     "imagemin-mozjpeg": "^9.0.0",
     "imagemin-optipng": "^8.0.0",
     "imagemin-svgo": "^8.0.0",
-    "prettier": "^2.1.2",
-    "next-sitemap": "^1.2.4"
+    "next-sitemap": "^1.6.173",
+    "prettier": "^2.1.2"
   },
   "keywords": [],
   "description": "Modern dating app that works"

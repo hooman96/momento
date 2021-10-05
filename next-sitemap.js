@@ -1,5 +1,5 @@
 module.exports = {
-  siteUrl: 'https://joinbach.com',
+  siteUrl: 'https://hooman96.github.io/momento',
   generateRobotsTxt: true,
   // optional
   // robotsTxtOptions: {
