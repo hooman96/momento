@@ -44,17 +44,7 @@ const socials = [
   {
     title: "instagram",
     size: "16",
-    url: "https://www.instagram.com/joinbach",
-  },
-  {
-    title: "dribbble",
-    size: "16",
-    url: "https://dribbble.com/",
-  },
-  {
-    title: "behance",
-    size: "20",
-    url: "https://www.behance.net/",
+    url: "https://www.instagram.com/",
   },
 ];
 
