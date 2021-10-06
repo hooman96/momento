@@ -28,20 +28,21 @@ const Workouts = () => {
               style={{ height: "55%" }}
             />
           </div>
-          <ScrollParallax className={styles.preview} animateIn='fadeInUp'>
+          {/* <ScrollParallax className={styles.preview} animateIn='fadeInUp'>
             <img
               srcSet='/images/content/jellybear.png 2x'
               src='/images/content/jellybear.png'
-              alt='Gloves'
+              alt='Bear'
             />
           </ScrollParallax>
           <ScrollParallax className={styles.preview} animateIn='fadeInUp'>
             <img
               srcSet='/images/content/lollipop.png 2x'
               src='/images/content/lollipop.png'
-              alt='Apple'
+              alt='LoliPop'
             />
           </ScrollParallax>
+        */}
         </div>
         <div className={styles.wrap}>
           <h2
