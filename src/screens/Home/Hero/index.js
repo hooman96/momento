@@ -33,7 +33,7 @@ const Hero = ({ scrollToRef }) => {
             <span className={styles.gradient}> coupons </span> <br />
           </h1>
           <div className={styles.text}>
-            Get the best discouns from influencers to buy the gifts you love without thinking about it
+            Get the best discounts from influencers to buy the gifts you love without thinking about it
 
             {/* We are an{" "} 
             <strong>

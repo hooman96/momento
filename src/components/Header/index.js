@@ -219,7 +219,7 @@ const Headers = () => {
               className={cn("button-stroke button-small", styles.button)}
               to='/'
             >
-              Join our waitlist!
+              Join Waitlist
             </Link>
           </div>
         </div>
@@ -231,7 +231,7 @@ const Headers = () => {
           className={cn("button-stroke button-small", styles.button)}
           to='/'
         >
-          Join our waitlist!
+          Join Waitlist
         </Link>
         {/* <button
           className={cn(styles.burger, { [styles.active]: visibleNav })}
