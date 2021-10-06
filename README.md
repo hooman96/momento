@@ -1,4 +1,4 @@
-This template is made on version node 14.15.4.
+This project is made on version node 14.15.4.
 
 # Momento
 
