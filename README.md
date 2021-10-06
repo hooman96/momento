@@ -6,6 +6,8 @@ This repo will be available https://hooman96.github.io/momento/
 
 # Setup
 `npm install`
+or
+`yarn install`
 
 ## Build
 `npm run build`
