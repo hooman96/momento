@@ -1,6 +1,17 @@
-import React from 'react';
-import { Image as Img } from 'theme-ui';
+import React from "react";
+import useDarkMode from "use-dark-mode";
 
-export default function Image({ src, ...rest }) {
-  return <Img src={src} {...rest} />;
-}
+const Image = ({ className, src, srcDark, srcSet, srcSetDark, alt }) => {
+  const darkMode = useDarkMode(false);
+
+  return (
+    <img
+      className={className}
+      srcSet={darkMode.value ? srcSetDark : srcSet}
+      src={darkMode.value ? srcDark : src}
+      alt={alt}
+    />
+  );
+};
+
+export default Image;

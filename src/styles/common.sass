@@ -1,0 +1,50 @@
+body
+    min-width: 375px
+    background: linear-gradient(275.59deg, rgba(240, 242, 246, 0.33) 51.6%, #F0F2F6 95.22%, #ECF1FA 98.45%)
+    +norms
+    font-size: 16px
+    line-height: 1.5
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+    color: $neutrals2
+    +dark-body
+        background: radial-gradient(42.48% 56.63% at 75.03% 33.15%, #191935 0%, #17171F 62.81%)
+        color: $neutrals8
+
+a
+    text-decoration: none
+
+
+svg,
+img
+    vertical-align: middle
+
+.desktop
+    &-hide
+        +d
+            display: none !important
+    &-show
+        display: none !important
+        +d
+            display: block !important
+    &-text-right
+        +d
+            text-align: right
+
+.tablet
+    &-hide
+        +t
+            display: none !important
+    &-show
+        display: none !important
+        +t
+            display: block !important
+            
+.mobile
+    &-hide
+        +m
+            display: none !important
+    &-show
+        display: none !important
+        +m
+            display: block !important

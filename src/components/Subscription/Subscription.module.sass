@@ -1,0 +1,43 @@
+@import ../../styles/helpers
+
+.form
+    position: relative
+    width: 100%
+    +s
+    width: 100%
+
+.input
+    width: 100%
+    height: 56px !important
+    font-size: 17px !important
+    padding: 0 48px 0 14px
+    border-radius: 100px
+    background: $white
+    box-shadow: 0 2px 6px 0 #31315d1c
+    border: 2px solid $neutrals6
+    +norms
+  
+    transition: border-color .2s
+    +dark
+        border-color: $neutrals3
+        color: $neutrals8
+    &:focus
+        border-color: $neutrals4
+    +placeholder
+        color: $neutrals4
+
+.btn
+    position: absolute
+    top: 8px
+    right: 8px
+    bottom: 8px
+    width: 42px
+        box-shadow: 0 4px 6px 0 #31315d1c
+    height: 42px
+    border-radius: 50%
+    background: $black
+    transition: background .2s
+    svg
+        fill: $neutrals8
+    &:hover
+        background: darken($neutrals8, 10)

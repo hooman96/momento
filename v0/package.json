@@ -1,0 +1,48 @@
+{
+  "name": "joinbatch",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "serve": "next start",
+    "export": "next export",
+    "postbuild": "next-sitemap",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "@formspree/react": "^2.2.3",
+    "@sendgrid/mail": "^7.2.6",
+    "axios": "^0.21.1",
+    "dotenv": "^8.2.0",
+    "framer-motion": "^2.7.5",
+    "globby": "^11.0.0",
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^11.1.2",
+    "next-compose-plugins": "^2.2.0",
+    "next-optimized-images": "^2.5.5",
+    "rc-drawer": "^4.1.0",
+    "react": "^17.0.2",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dom": "^17.0.2",
+    "react-ga": "^3.1.2",
+    "react-icons": "^3.9.0",
+    "react-id-swiper": "^4.0.0",
+    "react-modal-video": "^1.2.6",
+    "react-scroll": "^1.8.0",
+    "react-stickynode": "^3.0.3",
+    "react-waypoint": "^9.0.2",
+    "swiper": "^6.3.1",
+    "theme-ui": "^0.3.1",
+    "typeface-dm-sans": "^1.1.3"
+  },
+  "devDependencies": {
+    "imagemin-mozjpeg": "^9.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^8.0.0",
+    "next-sitemap": "^1.6.173",
+    "prettier": "^2.1.2"
+  },
+  "keywords": [],
+  "description": "Modern dating app that works"
+}
