@@ -6,8 +6,8 @@ import Image from "../Image";
 import ScrollParallax from "../ScrollParallax";
 
 const items = [
-  "Influencers coupons even the ones you don't know of",
-  "Choose from personalized deals",
+  "Custom GPT with 24/7 support",
+  "Choose from personalized plans",
   "No hidden fees, simple discounts",
   "Advanced security features",
   "Intuitive and clean design",
@@ -20,10 +20,10 @@ const Workouts = () => {
         <div className={styles.gallery}>
           <div className={styles.preview}>
             <Image
-              srcSet='/images/content/bottle@2x.png 2x'
-              srcSetDark='/images/content/bottle@2x.png 2x'
-              src='/images/content/bottle@2x.png'
-              srcDark='/images/content/bottle@2x.png'
+              srcSet='/images/content/cloud.jpg 2x'
+              srcSetDark='/images/content/cloud.jpg 2x'
+              src='/images/content/cloud.jpg'
+              srcDark='/images/content/cloud.jpg'
               alt='Phones'
               style={{ height: "55%" }}
             />
@@ -52,11 +52,11 @@ const Workouts = () => {
               letterSpacing: "-0.5px",
             }}
           >
-            View gifts. Get discounts. As simple as that.
+            View tiers. Get cost reduction. As easy as few clicks.
             <br />
           </h2>
           <div className={styles.info}>
-            Less time looking, better gift suggestions, and more savings.
+            Less time managing, productive building, more savings & extra money for the business.
             <br />
           </div>
           <ul className={styles.list}>

@@ -60,10 +60,9 @@ const Team = () => {
 						Catch our Launch
 					</h2>
 					<div className={styles.info}>
-						Our mission is to help influencers to connect with users.
-						We want to help small businesses grow their audiences. <br />
+						Our mission is to connect the major cloud providers <br />
 						<br />
-						Join and explore the endless possibilities.
+						Join our platform and enjoy the benefits of our complex yet simple system
 					</div>
 					{/* <div className={styles.nav}>
 						{trainersList.map((x, index) => (

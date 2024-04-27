@@ -5,32 +5,32 @@ import ScrollParallax from "../../../components/ScrollParallax";
 
 const items = [
   {
-    title: "Discovery",
+    title: "Discovery Plan",
     // color: "#1A1B27",
     images: "/images/content/colorsearch.png",
     content:
-      "Look on Momento home page for the best personalized deals",
+      "Look on the personalized email for instruction",
   },
   {
     title: "Savings",
     // color: "#1A1B27",
     images: "/images/content/colorsale.png",
     content:
-      "Get discount on trendy brands and influencers coupons",
+      "Get discount on our tiers based on the infrastructure need",
   },
   {
-    title: "Gift",
+    title: "Promotion",
     // color: "#1A1B27",
     images: "/images/content/colorgift.png",
     content:
-      "Purchase the gift you liked wether for someone or even yourself",
+      "Promotions will be given to customers with on going subscription",
   },
   {
     title: "Repeat",
     // color: "#1A1B27",
     images: "/images/content/colorredo.png",
     content:
-      "Once you try Momento, we hope that you come back for more",
+      "Stay on the plan where most benefits make sense to you",
   },
 ];
 
@@ -43,15 +43,14 @@ const Steps = ({ scrollToRef }) => {
             className={cn("h2", styles.title)}
             style={{ fontFamily: "New Spirit" }}
           >
-            How it works:
+            How it is done:
             <br />
-            Deals on Demand
+            Momento CLI
           </h2>
           <div className={styles.info}>
-            Explore and find the hidden deals from influencers
+            Explore to find the right infrastructure based on the system design
             <br /> <br />
-            Momento will collect all the coupons from varity of sources like
-            Instagram and TikTok in one unified place
+            Momento will collect all cloud accounts and give the best personalized suggestions
           </div>
         </div>
         <div className={styles.list}>

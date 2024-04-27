@@ -75,51 +75,51 @@ export const trainersList = [
       {
         name: "",
         image:
-          "https://i.pinimg.com/564x/24/6e/fc/246efcd26d1bcc477f0a2745033fbec8.jpg",
-        position: "South America",
+          "/images/content/free.png",
+        position: "Freemium",
         // courses: courses,
         // socials: socials,
       },
       {
         name: "",
         image:
-          "https://i.pinimg.com/474x/44/d8/6d/44d86dff0383509e299d7b2ae20dd63a.jpg",
-        position: "North America",
+        "/images/content/39month.png",
+        position: "Premium",
         // courses: courses,
         // socials: socials,
       },
       {
         name: "",
         image:
-          "https://i.pinimg.com/564x/d8/60/db/d860dbfbc9723cf2abc91c2d566d12e8.jpg",
-        position: "Central America",
+        "/images/content/399year.png",
+        position: "Professional",
         // courses: courses,
         // socials: socials,
       },
-      {
-        name: "",
-        image:
-          "https://i.pinimg.com/564x/45/70/f4/4570f4d648fa2c5ac6fa596815a1499b.jpg",
-        position: "Europe",
-        // courses: courses,
-        // socials: socials,
-      },
-      {
-        name: "",
-        image:
-          "https://i.pinimg.com/564x/b8/a7/5f/b8a75f38b801c167a104df776d4f2feb.jpg",
-        position: "Asia",
-        // courses: courses,
-        // socials: socials,
-      },
-      {
-        name: "",
-        image:
-          "https://media.cntraveler.com/photos/5db9be6af58e660008a4b6cf/5:4/w_1665,h_1332,c_limit/1ButcherandBee-Nashville-AndrewCebulka-2019-1.jpg",
-        position: "Middle East",
-        // courses: courses,
-        // socials: socials,
-      },
+      // {
+      //   name: "",
+      //   image:
+      //     "https://i.pinimg.com/564x/45/70/f4/4570f4d648fa2c5ac6fa596815a1499b.jpg",
+      //   position: "Alpha",
+      //   // courses: courses,
+      //   // socials: socials,
+      // },
+      // {
+      //   name: "",
+      //   image:
+      //     "https://i.pinimg.com/564x/b8/a7/5f/b8a75f38b801c167a104df776d4f2feb.jpg",
+      //   position: "Beta",
+      //   // courses: courses,
+      //   // socials: socials,
+      // },
+      // {
+      //   name: "",
+      //   image:
+      //     "https://media.cntraveler.com/photos/5db9be6af58e660008a4b6cf/5:4/w_1665,h_1332,c_limit/1ButcherandBee-Nashville-AndrewCebulka-2019-1.jpg",
+      //   position: "Production",
+      //   // courses: courses,
+      //   // socials: socials,
+      // },
     ],
   },
   {

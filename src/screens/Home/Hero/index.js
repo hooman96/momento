@@ -10,6 +10,8 @@ import Subscription from "../../../components/Subscription";
 
 import ScrollParallax from "../../../components/ScrollParallax";
 
+import EmailSignup from '../../../components/EmailSignup'; // Import  the email signup
+
 const Hero = ({ scrollToRef }) => {
   return (
     <div className={styles.hero}>
@@ -26,14 +28,14 @@ const Hero = ({ scrollToRef }) => {
               letterSpacing: "0.5px",
             }}
           >
-            Seamless Gift Suggestions
+            Seamless Migration Platform
           </div>
           <h1 className={cn("h1", styles.title)}>
-            <span className={styles.gradient2}> Momento</span> influencers <br />
-            <span className={styles.gradient}> coupons </span> <br />
+            <span className={styles.gradient2}> Momento AI</span> Cloud Mapping <br />
+            <span className={styles.gradient}> Interoperability </span> <br />
           </h1>
           <div className={styles.text}>
-            Get the best discounts from influencers to buy the gifts you love without thinking about it
+            Get the connectivity among AWS, GCP and Azure without any hassles. Sign up to get the latest info
 
             {/* We are an{" "} 
             <strong>
@@ -46,6 +48,12 @@ const Hero = ({ scrollToRef }) => {
             className={styles.subscription}
             placeholder='Enter your email'
           />
+
+          {/* <ScrollParallax className={styles.subscription}>
+            <div className={styles.signup}>
+                <EmailSignup />
+            </div>
+         </ScrollParallax> */}
           <div className={styles.btns}>
             {/* <Link
               style={{ backgroundColor: "black" }}
@@ -69,53 +77,6 @@ const Hero = ({ scrollToRef }) => {
           }
           className={styles.scroll}
         />
-        <div className={styles.gallery}>
-          <ScrollParallax className={styles.preview} animateIn='fadeInUp'>
-            <Image
-              srcSet='/images/content/giftanim.gif 2x'
-              srcSetDark='/images/content/giftanim.gif 2x'
-              src='/images/content/giftanim.gif'
-              srcDark='/images/content/giftanim.gif'
-              alt='Bach'
-            />
-          </ScrollParallax>
-          
-          {/*
-          	<ScrollParallax
-            className={styles.preview}
-            animateIn='fadeInUp'
-            delay={900}
-          >
-            <img
-              srcSet='/images/content/ball@2x.png 2x'
-              src='/images/content/ball@2x.png'
-              alt='Ball'
-            />
-          </ScrollParallax>
-          <ScrollParallax
-            className={styles.preview}
-            animateIn='fadeInUp'
-            delay={600}
-          >
-            <img
-              srcSet='/images/content/bottle@2x.png 2x'
-              src='/images/content/bottle@2x.png'
-              alt='confetti'
-            />
-          </ScrollParallax>
-          <ScrollParallax
-            className={styles.preview}
-            animateIn='fadeInUp'
-            delay={1200}
-          >
-            <img
-              srcSet='/images/content/wine.png 2x'
-              src='/images/content/wine.png'
-              alt='hand'
-            />
-          </ScrollParallax>
-        */}
-        </div>
       </div>
     </div>
   );
