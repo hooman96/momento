@@ -9,7 +9,6 @@
     "@testing-library/user-event": "^12.1.10",
     "body-scroll-lock": "^3.1.5",
     "classnames": "^2.2.6",
-    "node-sass": "^9.0.0",
     "react": "^17.0.1",
     "react-animate-on-scroll": "^2.1.5",
     "react-dom": "^17.0.1",
@@ -27,9 +26,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
