@@ -1,3 +1,4 @@
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./styles/app.sass";
 import Page from "./components/Page";
@@ -31,7 +32,7 @@ function App() {
             </Page>
           )}
         />
-        <Route
+        /*<Route
           exact
           path='/features'
           render={() => (
@@ -48,7 +49,7 @@ function App() {
               <Pricing />
             </Page>
           )}
-        />
+        />*/
         <Route
           exact
           path='/download'
@@ -104,17 +105,18 @@ function App() {
           )}
         />
         <Route
-          exact
-          path='/article'
-          render={() => (
-            <Page>
-              <Article />
-            </Page>
-          )}
+        //   exact
+        //   path='/article'
+        //   render={() => (
+        //     <Page>
+        //       <Article />
+        //     </Page>
+        //   )}
         />
       </Switch>
     </Router>
   );
 }
+
 
 export default App;
