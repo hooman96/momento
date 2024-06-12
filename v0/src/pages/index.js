@@ -23,7 +23,7 @@ export default function IndexPage() {
       <StickyProvider>
         <Layout>
           <SEO
-            description="gift discovery"
+            description="Cloud Mapping AI B2B SaaS Platform"
             title="Momento App"
           />
           <Banner />
