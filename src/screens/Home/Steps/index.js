@@ -1,6 +1,6 @@
 import React from "react";
 import cn from "classnames";
-import styles from "./Steps.module.sass";
+// import styles from "./Steps.module.sass";
 import ScrollParallax from "../../../components/ScrollParallax";
 
 const items = [
@@ -34,43 +34,46 @@ const items = [
   },
 ];
 
-const Steps = ({ scrollToRef }) => {
-  return (
-    <div className={cn("section", styles.section)} ref={scrollToRef}>
-      <div className={cn("container", styles.container)}>
-        <div className={styles.head}>
-          <h2
-            className={cn("h2", styles.title)}
-            style={{ fontFamily: "New Spirit" }}
-          >
-            How it is done:
-            <br />
-            Momento CLI
-          </h2>
-          <div className={styles.info}>
-            Explore to find the right infrastructure based on the system design
-            <br /> <br />
-            Momento will collect all cloud accounts and give the best personalized suggestions
-          </div>
-        </div>
-        <div className={styles.list}>
-          {items.map((x, index) => (
-            <ScrollParallax className={styles.item} key={index}>
-              <div
-                className={styles.preview}
-                style={{ backgroundColor: x.color }}
-              >
-                <img src={x.images} alt={`Step ${index}`} />
-              </div>
-              <div className={styles.number}>Step {index + 1}</div>
-              <div className={styles.subtitle}>{x.title}</div>
-              <div className={styles.content}>{x.content}</div>
-            </ScrollParallax>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+// const Steps = ({ scrollToRef }) => {
+  // return;
+  // return (
+    // <div className={cn("section", styles.section)} ref={scrollToRef}>
+    //   <div className={cn("container", styles.container)}>
+    //     <div className={styles.head}>
+    //       <h2
+    //         className={cn("h2", styles.title)}
+    //         style={{ fontFamily: "New Spirit" }}
+    //       >
+    //         How it is done:
+    //         <br />
+    //         Momento CLI
+    //       </h2>
+    //       <div className={styles.info}>
+    //         Explore to find the right infrastructure based on the system design
+    //         <br /> <br />
+    //         Momento will collect all cloud accounts and give the best personalized suggestions
+    //       </div>
+    //     </div>
+    //     <div className={styles.list}>
+    //       {items.map((x, index) => (
+    //         <ScrollParallax className={styles.item} key={index}>
+    //           <div
+    //             className={styles.preview}
+    //             style={{ backgroundColor: x.color }}
+    //           >
+    //             <img src={x.images} alt={`Step ${index}`} />
+    //           </div>
+    //           <div className={styles.number}>Step {index + 1}</div>
+    //           <div className={styles.subtitle}>{x.title}</div>
+    //           <div className={styles.content}>{x.content}</div>
+    //         </ScrollParallax>
+    //       ))}
+    //     </div>
+    //   </div>
+    // </div>
+  // );
+// };
+const Steps = () => {
+  return <div></div>
 };
-
 export default Steps;

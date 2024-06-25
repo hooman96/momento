@@ -20,7 +20,7 @@ const Hero = ({ scrollToRef }) => {
           <div
             style={{
               fontFamily: "TT Norms Bold",
-              fontSize: "14px",
+              fontSize: "18px",
 
               marginBottom: "16px",
               opacity: "0.8",
@@ -71,12 +71,12 @@ const Hero = ({ scrollToRef }) => {
             </Link> */}
           </div>
         </ScrollParallax>
-        <ScrollButton
+        {/* <ScrollButton
           onScroll={() =>
             scrollToRef.current.scrollIntoView({ behavior: "smooth" })
           }
           className={styles.scroll}
-        />
+        /> */}
       </div>
     </div>
   );
