@@ -96,7 +96,7 @@ const Footer = () => {
           <div className={styles.col}>
             <div className={styles.category}>contact</div>
             <div className={styles.info}>
-              <p>hooistheman@gmail.com</p>
+              <p>hooman@momentoai.onmicrosoft.com</p>
               <p>+1 (407) - 984 - 4745</p>
             </div>
           </div>
