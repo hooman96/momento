@@ -17,7 +17,7 @@ const Offer = ({ className }) => {
         backgroundRepeat: "repeat-x",
       }}
     >
-      <div className={cn(className, styles.section)}>
+      {/* <div className={cn(className, styles.section)}>
         <div className={cn("container", styles.container)}>
           <div
             style={{
@@ -51,8 +51,8 @@ const Offer = ({ className }) => {
           {/*<Link className={cn("button", styles.button)} to='/download'>
             Start my adventure
           </Link>*/}
-        </div>
-      </div>
+        {/* </div> */}
+      {/* </div> */} */}
     </div>
   );
 };
