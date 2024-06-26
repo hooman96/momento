@@ -52,7 +52,7 @@ const Offer = ({ className }) => {
             Start my adventure
           </Link>*/}
         {/* </div> */}
-      {/* </div> */} */}
+      {/* </div> */}
     </div>
   );
 };
