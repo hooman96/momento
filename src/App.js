@@ -14,6 +14,8 @@ import Lifestyle from "./screens/Lifestyle";
 import Article from "./screens/Article";
 import ReactGA from "react-ga";
 import Blog from './screens/Blog';
+import NewPost from './screens/NewPost';
+import PostForm from './components/PostForm';
 
 export const initGA = () => {
   console.log("GA init");
@@ -51,6 +53,21 @@ function App() {
             </Page>
           )}
         />
+
+         <Route
+         
+         exact
+         path='/blog/new-post'
+         render = {() => (
+          <Page>
+            <PostForm/>
+          </Page>
+         ) }
+         
+         
+         />
+
+
         <Route
           exact
           path='/pricing'
