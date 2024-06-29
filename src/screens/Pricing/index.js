@@ -5,6 +5,7 @@ import Comment from "./Comment";
 import Faq from "./Faq";
 import Testimonials from "../../components/Testimonials";
 import Hero from "./Hero";
+import Hero2 from "./Hero2";
 
 const Pricing = () => {
   return (
@@ -14,6 +15,7 @@ const Pricing = () => {
       {/* <Comment />
       <Faq />
       <Testimonials className="section-bg" /> */}
+      <Hero2/>
     </>
   );
 };

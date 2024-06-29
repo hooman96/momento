@@ -50,10 +50,10 @@ const PricingCard = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800">
       <div className="max-w-6xl w-full mx-4">
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-gray-100">Pricing Plans</h1>
+          {/* <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-gray-100">Pricing Plans</h1>
           <p className="mt-4 text-lg md:text-xl text-gray-700 dark:text-gray-300">
             Flexible pricing plans designed to grow with you.
-          </p>
+          </p> */}
         </div>
         <div className="grid md:grid-cols-3 gap-8">
           {plans.map((plan, index) => (
