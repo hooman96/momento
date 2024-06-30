@@ -1,0 +1,311 @@
+// PricingCard.module.scss
+
+@import '../../../styles/helpers';
+
+.section {
+  @include dark {
+    background: none;
+  }
+}
+
+.stage {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.title {
+  max-width: 550px;
+  margin: 0 auto 80px;
+  text-align: center;
+  @include m {
+    margin-bottom: 64px;
+  }
+}
+
+.row {
+  display: flex;
+  @include m {
+    display: block;
+  }
+}
+
+.col {
+  flex: 1 1;
+  @include m {
+    padding: 48px 32px 64px;
+    background: $neutrals8;
+    border-radius: 24px;
+    @include dark {
+      background: $neutrals2;
+    }
+  }
+
+  &:first-child {
+    flex: 0 0 250px; // Adjusted width
+    @include d {
+      flex: 0 0 220px;
+    }
+    @include t {
+      flex: 0 0 130px;
+    }
+    @include m {
+      display: none;
+    }
+  }
+
+  &:nth-child(3) {
+    border-radius: 24px;
+    background: $neutrals8;
+    @include dark {
+      background: $neutrals2;
+
+      .parameter,
+      .tick {
+        border-color: rgba($neutrals4, .3);
+      }
+    }
+  }
+
+  &:not(:first-child) {
+    padding-bottom: 54px;
+    text-align: center;
+    @include m {
+      text-align: left;
+    }
+
+    .body {
+      padding-top: 28px;
+    }
+
+    .parameter {
+      justify-content: center;
+      text-align: center;
+      @include m;
+    }
+
+    .label {
+      display: none;
+      @include m {
+        display: block;
+      }
+    }
+  }
+
+  &:not(:last-child) {
+    @include m {
+      margin-bottom: 32px;
+    }
+  }
+}
+
+.head {
+  min-height: 256px;
+  padding: 48px 32px 44px;
+  @include t {
+    padding: 48px 16px 44px;
+  }
+  @include m {
+    min-height: auto;
+    padding: 0;
+  }
+}
+
+.more {
+  display: none;
+  @include m {
+    display: flex;
+    align-items: center;
+    @include caption-2;
+    font-weight: 600;
+
+    &.active {
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+
+    svg {
+      margin-left: 12px;
+      fill: $neutrals4;
+      transition: transform .2s;
+    }
+  }
+}
+
+.package {
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.description {
+  @include caption-1;
+  color: $neutrals4;
+}
+
+.cost {
+  position: relative;
+  display: inline-block;
+  margin-top: 32px;
+  @include m {
+    margin-left: 15px;
+  }
+}
+
+.price {
+  @include sf-pro-display;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: -.02em;
+}
+
+.sign {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 4px);
+  @include body-1;
+}
+
+.note {
+  @include caption-2;
+  color: $neutrals4;
+}
+
+.list {
+  @include m {
+    display: none;
+    padding-top: 24px;
+
+    &.visible {
+      display: block;
+    }
+  }
+}
+
+.category {
+  margin-bottom: 16px;
+  @include hairline-2;
+  color: $neutrals4;
+}
+
+.parameter,
+.tick {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  border-bottom: 1px solid $neutrals6;
+  @include dark {
+    border-color: $neutrals2;
+  }
+
+  svg {
+    fill: $green;
+  }
+}
+
+.label {
+  margin-right: auto;
+  font-weight: 600;
+}
+
+.hint {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  margin-left: 20px;
+  border-radius: 50%;
+  border: 2px solid $neutrals5;
+  cursor: pointer;
+  @include t {
+    display: none;
+  }
+
+  svg {
+    fill: $neutrals5;
+  }
+
+  &:hover {
+    .tooltip {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
+.tooltip {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + 20px);
+  min-width: 260px;
+  padding: 6px 12px;
+  transform: translateY(-50%);
+  border-radius: 4px;
+  background: $neutrals8;
+  box-shadow: 0 4px 12px rgba($neutrals2, .1);
+  font-size: 14px;
+  visibility: hidden;
+  opacity: 0;
+  transition: all .2s;
+
+  &:before {
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    @include arr(6, 12, $neutrals8, l);
+  }
+
+  @include dark {
+    background: $neutrals3;
+    box-shadow: 0 4px 12px rgba($neutrals1, .1);
+
+    &:before {
+      @include arr(6, 12, $neutrals3, l);
+    }
+  }
+}
+
+.tick {
+  justify-content: center;
+
+  svg {
+    fill: $green;
+  }
+}
+
+.minus {
+  padding: 0 2px;
+  font-size: 18px;
+  font-weight: 600;
+  color: $neutrals4;
+}
+
+.button {
+  margin-top: 54px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #333;
+  }
+
+  svg {
+    margin-left: 8px;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+
