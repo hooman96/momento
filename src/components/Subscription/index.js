@@ -1,18 +1,44 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+// import { useHistory } from "react-router-dom";
 import { useForm, ValidationError } from "@formspree/react";
 import cn from "classnames";
 import styles from "./Subscription.module.sass";
 import Icon from "../Icon";
 
 const Subscription = ({ className, placeholder }) => {
-  let history = useHistory();
-  const [state, handleSubmit] = useForm("xyylzezj");
+  // let history = useHistory();
+
+  const [email, setEmail] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState(null);
+
+  const [state, _] = useForm("xyylzezj");
   if (state.succeeded) {
     return <h3>Thanks for joining! We'll be in touch with our Beta link!</h3>;
   }
+  
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  // const [email, setEmail] = useState("");
+    try {
+      const response = await fetch('https://momento-six.vercel.app/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit email');
+      }
+
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error('Error submitting email:', error);
+      setError('Something went wrong. Please try again.');
+    }
+  };
 
   return (
     <form className={cn(styles.form, className)} onSubmit={handleSubmit}>

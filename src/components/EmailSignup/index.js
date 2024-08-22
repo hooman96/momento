@@ -1,35 +1,53 @@
 import React, { useState } from 'react';
 
 function EmailSignup() {
-    const [email, setEmail] = useState('');
-    const [isSubmitted, setIsSubmitted] = useState(false);
-  
-    const handleSubmit = (event) => {
-      event.preventDefault(); 
-      // Handle email submission logic here (e.g., send to a server)
-      console.log('Email submitted:', email); 
+  const [email, setEmail] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('https://momento-six.vercel.app/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit email');
+      }
+
       setIsSubmitted(true);
-    };
-  
-    return (
-      <div>
-        {isSubmitted ? (
-          <h2>Thanks for signing up!</h2>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <label htmlFor="email">Enter your email:</label>
-            <input 
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required 
-            />
-            <button type="submit">Sign Up</button>
-          </form>
-        )}
-      </div>
-    );
-  }
-  
-  export default EmailSignup;
+    } catch (error) {
+      console.error('Error submitting email:', error);
+      setError('Something went wrong. Please try again.');
+    }
+  };
+
+  return (
+    <div>
+      {isSubmitted ? (
+        <h2>Thanks for signing up!</h2>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Enter your email:</label>
+          <input 
+            type="email"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required 
+          />
+          <button type="submit">Sign Up</button>
+          {error && <p>{error}</p>}
+        </form>
+      )}
+    </div>
+  );
+}
+
+export default EmailSignup;
