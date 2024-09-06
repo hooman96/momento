@@ -25,8 +25,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+     
+    "eject": "react-scripts eject",
+    "test": "jest",
+    "test:watch": "jest --watchAll "
   },
   "eslintConfig": {
     "extends": [
@@ -52,6 +54,9 @@
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
     "@babel/preset-env": "^7.24.4",
     "@babel/preset-react": "^7.24.1",
-    "gh-pages": "^6.1.1"
+    "autoprefixer": "^10.4.19",
+    "gh-pages": "^6.1.1",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4"
   }
 }

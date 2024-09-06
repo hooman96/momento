@@ -1,230 +1,134 @@
-import React, { useState } from "react";
-import cn from "classnames";
-import styles from "./Plan.module.sass";
-import Icon from "../../../components/Icon";
+import React from 'react';
 
-const options = [
-  {
-    title: "Main features",
-    items: [
-      {
-        title: "Time-Trackers",
-        description: "Some Text",
-      },
-      {
-        title: "Exclusive Music",
-        description: "Some Text",
-      },
-      {
-        title: "E-books",
-        description: "Some Text",
-      },
-      {
-        title: "Documents",
-        description: "Some Text",
-      },
-      {
-        title: "Premium Tutorial",
-        description: "Some Text",
-      },
-      {
-        title: "Client Support",
-        description: "Some Text",
-      },
-      {
-        title: "Premium Courses",
-        description: "Some Text",
-      },
-      {
-        title: "User support",
-        description: "Some Text",
-      },
-      {
-        title: "Chat to trainers",
-        description: "Some Text",
-      },
-      {
-        title: "Unlimited Videos",
-        description: "Some Text",
-      },
-    ],
-  },
-];
-
-const data = [
-  {
-    title: "Free Trial",
-    color: "#9757D7",
-    description: "14 days of free trial",
-    price: "0",
-    note: "per month",
-    button: "Start free trial",
-    options: [
-      "true",
-      "true",
-      "true",
-      "false",
-      "true",
-      "true",
-      "false",
-      "false",
-      "false",
-      "false",
-    ],
-  },
-  {
-    title: "Premium",
-    color: "#FF592C",
-    description: "Fit with everyone",
-    price: "20.88",
-    note: "per month",
-    button: "Get Started",
-    options: [
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "false",
-      "false",
-    ],
-  },
-  {
-    title: "Unlimited Access",
-    color: "#EF466F",
-    description: "Are you pro? Let’s do it",
-    button: "Contact Sale",
-    options: [
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-      "true",
-    ],
-  },
-];
-
-const Plan = () => {
-  const [more, setMore] = useState([false, false, false]);
-
-  const handleClick = (index) => {
-    let newMore = [...more];
-    newMore[index] = !more[index];
-
-    setMore(newMore);
-  };
-
-  const renderContent = (content) => {
-    if (content === "true") {
-      return <Icon name="check" size="14" />;
-    }
-    if (content === "false") {
-      return <div className={styles.minus}>-</div>;
-    }
-    return <div className={styles.minus}>{content}</div>;
-  };
+const PricingCard = () => {
+  const plans = [
+    {
+      name: 'Free',
+      price: '$19/month',
+      description: 'For Individual Developers',
+      features: [
+        { name: 'Time-Trackers', available: true },
+        { name: '5 Projects', available: true },
+        { name: '10GB Storage', available: true },
+        { name: 'Basic Support', available: true },
+        { name: 'Advanced Analytics', available: false },
+        { name: 'Custom Analytics', available: false },
+      ],
+      btn: "Start Free trial"
+    },
+    {
+      name: 'Premium',
+      price: '$49/month',
+      description: 'Ideal for small teams',
+      features: [
+        { name: 'Time-Trackers', available: true },
+        { name: '50 Projects', available: true },
+        { name: '100GB Storage', available: true },
+        { name: 'Priority Support', available: true },
+        { name: 'Advanced Analytics', available: true },
+        { name: 'Custom Analytics', available: false },
+      ],
+      btn: " Get Started "
+    },
+    {
+      name: 'Unlimited',
+      price: '$99/month',
+      description: 'Enterprises and Startups',
+      features: [
+        { name: 'Time-Trackers', available: true },
+        { name: 'Unlimited Projects', available: true },
+        { name: '1TB Storage', available: true },
+        { name: '24/7 Support', available: true },
+        { name: 'Advanced Analytics', available: true },
+        { name: 'Custom Analytics', available: true },
+      ],
+      btn: " Contact Us "
+    },
+  ];
 
   return (
-    <div className={cn("section-bg", styles.section)}>
-      <div className={cn("container", styles.container)}>
-        <div className={cn("stage", styles.stage)}>
-          get stronger with fitness pro
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+      <div className="max-w-6xl w-full mx-4">
+        <div className="text-center mb-16">
+          {/* <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-gray-100">Pricing Plans</h1>
+          <p className="mt-4 text-lg md:text-xl text-gray-700 dark:text-gray-300">
+            Flexible pricing plans designed to grow with you.
+          </p> */}
         </div>
-        <h1 className={cn("h1", styles.title)}>
-          Choose a plan that’s right for you
-        </h1>
-        <div className={styles.table}>
-          <div className={styles.row}>
-            <div className={styles.col}>
-              <div className={styles.head}></div>
-              <div className={styles.body}>
-                {options.map((option, index) => (
-                  <div className={styles.item} key={index}>
-                    <div className={styles.category}>{option.title}</div>
-                    {option.items.map((item, index) => (
-                      <div className={styles.parameter} key={index}>
-                        <div className={styles.label}>{item.title}</div>
-                        <div className={styles.hint}>
-                          <Icon name="info" size="10" />
-                          <div className={styles.tooltip}>
-                            {item.description}
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ))}
+        <div className="grid md:grid-cols-3 gap-8">
+          {plans.map((plan, index) => (
+            <div
+              key={index}
+              className="bg-white dark:bg-gray-700 rounded-lg shadow-lg p-6   flex flex-col"
+            >
+
+              <div className='grid grid-cols-4 ' >
+                <div></div>
+                <div> <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-gray-100">{plan.name}</h2></div>
+
+
               </div>
+              <div className='grid grid-cols-1 ' >
+
+                <div className='items-center justify-center flex ' ><p className="text-lg mb-2 text-gray-700 dark:text-gray-300">{plan.description}</p></div>
+              </div>
+
+
+
+              <p className="text-xl  flex justify-center mt-8   font-semibold mb-2 text-gray-900 dark:text-gray-100">{plan.price}</p>
+              <ul className="mb-4 items-center grid grid-cols-3  justify-center   text-gray-700 dark:text-gray-300 flex-grow mt-10 ">
+                <div></div>
+                <div>
+                  {plan.features.map((feature, index) => (
+                    <li key={index} className="flex items-center mb-2">
+                      {feature.available ? (
+                        <svg
+                          className="w-6 h-6 text-green-500 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          className="w-6 h-6 text-red-500 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      )}
+                      {feature.name}
+                    </li>
+                  ))}
+                </div>
+                <div></div>
+              </ul>
+              <button className="mt-auto w-full bg-black text-white py-2 rounded hover:bg-gray-800 transition duration-300">
+                {plan.btn}
+              </button>
             </div>
-            {data.map((type, index) => (
-              <div className={styles.col} key={index}>
-                <div className={styles.head}>
-                  <div className={styles.package} style={{ color: type.color }}>
-                    {type.title}
-                  </div>
-                  <div className={styles.description}>{type.description}</div>
-                  {type.price && (
-                    <>
-                      <div className={styles.cost}>
-                        <span className={styles.sign}>$</span>{" "}
-                        <span className={styles.price}>{type.price}</span>
-                      </div>
-                      <div className={styles.note}>{type.note}</div>
-                    </>
-                  )}
-                </div>
-                <div className={styles.body}>
-                  <div
-                    className={cn(styles.more, {
-                      [styles.active]: more[index],
-                    })}
-                    onClick={() => handleClick(index)}
-                  >
-                    See all features
-                    <Icon name="arrow-bottom" size="9" />
-                  </div>
-                  <div
-                    className={cn(styles.list, {
-                      [styles.visible]: more[index],
-                    })}
-                  >
-                    {options.map((option, optionIndex) => (
-                      <div className={styles.item} key={optionIndex}>
-                        {option.items.map((item, itemIndex) => (
-                          <div className={styles.parameter} key={itemIndex}>
-                            <div className={styles.label}>{item.title}</div>
-                            {renderContent(type.options[itemIndex])}
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    className={cn(
-                      { button: index === 0 },
-                      { button: index === 1 },
-                      { "button-stroke": index === 2 },
-                      styles.button
-                    )}
-                  >
-                    {type.button}
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+          ))}
         </div>
       </div>
     </div>
   );
 };
 
-export default Plan;
+export default PricingCard;
+
+
