@@ -13,6 +13,7 @@ import Class02Details from "./screens/Class02Details";
 import Lifestyle from "./screens/Lifestyle";
 import Article from "./screens/Article";
 import ReactGA from "react-ga";
+import Blog from './screens/Blog';
 
 export const initGA = () => {
   console.log("GA init");
@@ -38,6 +39,15 @@ function App() {
           render={() => (
             <Page>
               <Features />
+            </Page>
+          )}
+        />
+        <Route
+          exact
+          path='/blog'
+          render={() => (
+            <Page>
+              <Blog/>
             </Page>
           )}
         />
