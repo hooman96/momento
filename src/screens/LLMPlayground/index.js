@@ -3,8 +3,16 @@ import cn from "classnames";
 import styles from "./LLMPlayground.module.sass";
 
 const API_BASE = "http://localhost:8005";
+const LLM_PASSWORD = process.env.REACT_APP_LLM_PASSWORD || "momento2026";
+const AUTH_KEY = "llm_playground_auth";
 
 const LLMPlayground = () => {
+  const [authed, setAuthed] = useState(
+    () => sessionStorage.getItem(AUTH_KEY) === "1"
+  );
+  const [password, setPassword] = useState("");
+  const [authError, setAuthError] = useState("");
+
   const [models, setModels] = useState([]);
   const [displayNames, setDisplayNames] = useState({});
   const [selectedModels, setSelectedModels] = useState([]);
@@ -16,7 +24,19 @@ const LLMPlayground = () => {
   const [error, setError] = useState("");
   const [expandedRow, setExpandedRow] = useState(null);
 
+  const handleUnlock = (e) => {
+    e.preventDefault();
+    if (password === LLM_PASSWORD) {
+      sessionStorage.setItem(AUTH_KEY, "1");
+      setAuthed(true);
+      setAuthError("");
+    } else {
+      setAuthError("Incorrect password.");
+    }
+  };
+
   useEffect(() => {
+    if (!authed) return;
     fetch(`${API_BASE}/models`)
       .then((res) => res.json())
       .then((data) => {
@@ -27,7 +47,7 @@ const LLMPlayground = () => {
       .catch(() =>
         setError("Could not connect to the backend at " + API_BASE)
       );
-  }, []);
+  }, [authed]);
 
   const toggleModel = (modelId) => {
     setSelectedModels((prev) =>
@@ -87,6 +107,43 @@ const LLMPlayground = () => {
   };
 
   const hasResults = Object.keys(responses).length > 0;
+
+  if (!authed) {
+    return (
+      <div className={styles.section}>
+        <div className={cn("container", styles.gateContainer)}>
+          <form className={styles.gateCard} onSubmit={handleUnlock}>
+            <div className={styles.gateIcon}>
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+            </div>
+            <div className={styles.gateTitle}>Members Only</div>
+            <div className={styles.gateSubtitle}>
+              Enter the access password to continue.
+            </div>
+            <input
+              type="password"
+              className={styles.gateInput}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoFocus
+            />
+            {authError && <div className={styles.gateError}>{authError}</div>}
+            <button
+              type="submit"
+              className={cn("button", styles.gateButton)}
+              disabled={!password.trim()}
+            >
+              Unlock
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.section}>
@@ -192,16 +249,21 @@ const LLMPlayground = () => {
                     <tr>
                       <th className={styles.thModel}>Model</th>
                       <th className={styles.thResponse}>Response</th>
+                      <th className={styles.thStat}>Time</th>
+                      <th className={styles.thStat}>Tokens</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {Object.entries(responses).map(([modelId, text]) => {
+                    {Object.entries(responses).map(([modelId, result]) => {
                       const isExpanded = expandedRow === modelId;
+                      const text = result.text || "";
+                      const hasError = !!result.error;
                       return (
                         <React.Fragment key={modelId}>
                           <tr
                             className={cn(styles.row, {
                               [styles.rowExpanded]: isExpanded,
+                              [styles.rowError]: hasError,
                             })}
                             onClick={() =>
                               setExpandedRow(isExpanded ? null : modelId)
@@ -213,12 +275,36 @@ const LLMPlayground = () => {
                               </span>
                             </td>
                             <td className={styles.tdResponse}>
-                              {isExpanded ? (
+                              {hasError ? (
+                                <span className={styles.errorText}>
+                                  {result.error}
+                                </span>
+                              ) : isExpanded ? (
                                 <pre className={styles.fullText}>{text}</pre>
                               ) : (
                                 <span className={styles.preview}>
                                   {truncate(text)}
                                 </span>
+                              )}
+                            </td>
+                            <td className={styles.tdStat}>
+                              <span className={styles.statValue}>
+                                {result.elapsed_ms >= 1000
+                                  ? (result.elapsed_ms / 1000).toFixed(1) + "s"
+                                  : result.elapsed_ms + "ms"}
+                              </span>
+                            </td>
+                            <td className={styles.tdStat}>
+                              {result.usage ? (
+                                <span
+                                  className={styles.statValue}
+                                  title={`Prompt: ${result.usage.prompt_tokens} · Completion: ${result.usage.completion_tokens}`}
+                                >
+                                  {result.usage.total_tokens}
+                                  <span className={styles.statUnit}> total</span>
+                                </span>
+                              ) : (
+                                <span className={styles.statNA}>—</span>
                               )}
                             </td>
                           </tr>
