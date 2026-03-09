@@ -32,6 +32,13 @@ def complete(
         On error, "text" may be empty and "error" will contain the error message.
     """
     key = (api_key or OPENROUTER_API_KEY).strip()
+    if not key:
+        return {
+            "text": "",
+            "usage": None,
+            "model": model_id,
+            "error": "OPENROUTER_API_KEY is not set. Set it in .env or environment.",
+        }
     url = (base_url or OPENROUTER_BASE_URL).rstrip("/") + "/chat/completions"
 
     messages = []

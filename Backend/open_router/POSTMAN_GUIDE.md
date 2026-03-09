@@ -15,6 +15,15 @@ $env:OPENROUTER_API_KEY = "your-key-here"   # or use .env in open_router/
 uvicorn open_router.app:app --reload --host 0.0.0.0 --port 8000
 ```
 
+If `uvicorn` is not in your PATH, use:
+```powershell
+python -m uvicorn open_router.app:app --reload --host 0.0.0.0 --port 8000
+```
+Or run the app module directly (from Backend):
+```powershell
+python -m open_router.app
+```
+
 - **Base URL:** `http://localhost:8000`
 - **Docs (Swagger):** http://localhost:8000/docs  
 - **ReDoc:** http://localhost:8000/redoc  

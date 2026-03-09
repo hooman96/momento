@@ -40,7 +40,20 @@ OPENROUTER_API_KEY=your_key_here
 
 Copy from `.env.example` if provided.
 
-### 3. Run from the command line
+### 3. Run the FastAPI backend (optional)
+
+From the **Backend** directory (parent of `open_router`):
+
+```powershell
+cd path\to\momento\Backend
+uvicorn open_router.app:app --reload --host 0.0.0.0 --port 8000
+```
+
+- API: http://localhost:8000  
+- Swagger docs: http://localhost:8000/docs  
+- **Testing with Postman:** see [POSTMAN_GUIDE.md](./POSTMAN_GUIDE.md).
+
+### 4. Run from the command line
 
 ```bash
 # From backend/open_router (after implementation)
@@ -50,7 +63,7 @@ python -m open_router.cli "How do I reset my password?"
 python -m open_router.cli "How do I get started?" --mode onboarding --models openai/gpt-oss-20b:free,meta-llama/llama-3.3-70b-instruct:free
 ```
 
-### 4. Use from Python
+### 5. Use from Python
 
 ```python
 from open_router import route_prompt, support_reply

@@ -3,6 +3,7 @@
 from typing import List, Optional
 
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 from .router import route_prompt, support_reply
@@ -12,6 +13,15 @@ app = FastAPI(
     title="Open Router Backend",
     description="Multi-model routing for customer support and onboarding.",
     version="0.1.0",
+)
+
+# Allow browser/frontend calls from any origin (adjust origins in production)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -95,3 +105,13 @@ def support(request: SupportRequest):
         return ChatResponse(responses=responses)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(
+        "open_router.app:app",
+        host="0.0.0.0",
+        port=8000,
+        reload=True,
+    )
