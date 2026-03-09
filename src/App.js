@@ -12,6 +12,7 @@ import Class02 from "./screens/Class02";
 import Class02Details from "./screens/Class02Details";
 import Lifestyle from "./screens/Lifestyle";
 import Article from "./screens/Article";
+import LLMPlayground from "./screens/LLMPlayground";
 import ReactGA from "react-ga";
 
 export const initGA = () => {
@@ -101,6 +102,15 @@ function App() {
           render={() => (
             <Page>
               <Lifestyle />
+            </Page>
+          )}
+        />
+        <Route
+          exact
+          path='/llm'
+          render={() => (
+            <Page>
+              <LLMPlayground />
             </Page>
           )}
         />
