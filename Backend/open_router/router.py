@@ -41,19 +41,24 @@ def route_prompt(
         system_prompt: Optional system message applied to every model.
 
     Returns:
-        Dict mapping model_id -> response:
-          - On success: model_id -> response text (str).
-          - On error: model_id -> error message (str), so callers can distinguish.
-        So values are always strings (either the reply or an error message).
+        Dict mapping model_id -> result dict with keys:
+          - text: response text (str)
+          - usage: {prompt_tokens, completion_tokens, total_tokens} or None
+          - elapsed_ms: wall-clock time in ms
+          - tokens_per_second: completion tok/s or None
+          - error: error message or None
     """
     models = model_ids if model_ids is not None else DEFAULT_MODELS
     results = {}
 
     for model_id in models:
         out = complete(prompt, model_id, system_prompt=system_prompt)
-        if out.get("error"):
-            results[model_id] = out["error"]
-        else:
-            results[model_id] = out.get("text") or ""
+        results[model_id] = {
+            "text": out.get("text") or "",
+            "usage": out.get("usage"),
+            "elapsed_ms": out.get("elapsed_ms", 0),
+            "tokens_per_second": out.get("tokens_per_second"),
+            "error": out.get("error"),
+        }
 
     return results

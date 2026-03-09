@@ -44,9 +44,25 @@ class SupportRequest(BaseModel):
     model_ids: Optional[List[str]] = Field(None, description="Model IDs; default = all 5 free models")
 
 
+class TokenUsage(BaseModel):
+    """Token counts returned by the model."""
+    prompt_tokens: int = 0
+    completion_tokens: int = 0
+    total_tokens: int = 0
+
+
+class ModelResult(BaseModel):
+    """Full result for a single model completion."""
+    text: str = ""
+    usage: Optional[TokenUsage] = None
+    elapsed_ms: int = 0
+    tokens_per_second: Optional[float] = None
+    error: Optional[str] = None
+
+
 class ChatResponse(BaseModel):
-    """Responses keyed by model_id (value = text or error message)."""
-    responses: dict = Field(..., description="model_id -> response text or error")
+    """Responses keyed by model_id with text, usage, and speed metrics."""
+    responses: dict = Field(..., description="model_id -> ModelResult")
 
 
 # --- Endpoints ---

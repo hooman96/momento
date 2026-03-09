@@ -1,11 +1,13 @@
 # Open Router Multi-Model Router
 
-Python service that takes a user prompt and routes it to **3–5 AI models** via [Open Router](https://openrouter.ai) for **customer support** and **onboarding**. Use it from other Python code, from the CLI, or (optionally) via an HTTP API.
+Python service that takes a user prompt and routes it to **3–5 AI models** via [Open Router](https://openrouter.ai) for **customer support** and **onboarding**. Each response includes the model's reply text, **token usage**, and **speed metrics**. Use it from other Python code, from the CLI, or via the HTTP API.
 
 ## Features
 
 - **Multi-model routing**: Send one prompt to multiple models in one call.
 - **Free models**: Default set of 5 free models (OpenAI, Meta Llama, Google Gemma, Qwen, Z.ai GLM).
+- **Token usage tracking**: Every response reports `prompt_tokens`, `completion_tokens`, and `total_tokens`.
+- **Speed metrics**: Wall-clock `elapsed_ms` and computed `tokens_per_second` for each model.
 - **Use-case presets**: Built-in system prompts for customer support and onboarding.
 - **Integration-ready**: Import and call from the rest of the project, or run as a script.
 
@@ -40,37 +42,38 @@ OPENROUTER_API_KEY=your_key_here
 
 Copy from `.env.example` if provided.
 
-### 3. Run the FastAPI backend (optional)
+### 3. Run the FastAPI backend
 
 From the **Backend** directory (parent of `open_router`):
 
 ```powershell
 cd path\to\momento\Backend
-uvicorn open_router.app:app --reload --host 0.0.0.0 --port 8000
+uvicorn open_router.app:app --reload --host 0.0.0.0 --port 8005
 ```
 
-- API: http://localhost:8000  
-- Swagger docs: http://localhost:8000/docs  
+- API: http://localhost:8005
+- Swagger docs: http://localhost:8005/docs
 - **Testing with Postman:** see [POSTMAN_GUIDE.md](./POSTMAN_GUIDE.md).
+- **Full API reference:** see [API_REFERENCE.md](./API_REFERENCE.md).
 
-### 4. Run from the command line
-
-```bash
-# From backend/open_router (after implementation)
-python -m open_router.cli "How do I reset my password?"
-
-# With mode and optional model list
-python -m open_router.cli "How do I get started?" --mode onboarding --models openai/gpt-oss-20b:free,meta-llama/llama-3.3-70b-instruct:free
-```
-
-### 5. Use from Python
+### 4. Use from Python
 
 ```python
 from open_router import route_prompt, support_reply
 
 # Route to all default models
 responses = route_prompt("What are your opening hours?")
-# -> {"openai/gpt-oss-20b:free": "...", "meta-llama/llama-3.3-70b-instruct:free": "...", ...}
+# Each value is a dict with text, usage, speed, and error fields:
+# {
+#   "openai/gpt-oss-20b:free": {
+#     "text": "Our hours are...",
+#     "usage": {"prompt_tokens": 14, "completion_tokens": 38, "total_tokens": 52},
+#     "elapsed_ms": 2340,
+#     "tokens_per_second": 16.2,
+#     "error": null
+#   },
+#   ...
+# }
 
 # Customer support mode (uses support system prompt)
 responses = support_reply("I can't log in.", mode="customer_support")
@@ -78,6 +81,18 @@ responses = support_reply("I can't log in.", mode="customer_support")
 # Onboarding mode
 responses = support_reply("How do I set up my profile?", mode="onboarding")
 ```
+
+## Response format
+
+Every model result (from both the Python API and the HTTP API) is a dict with these fields:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `text` | `string` | The model's reply text. Empty string on error. |
+| `usage` | `object \| null` | Token counts: `prompt_tokens`, `completion_tokens`, `total_tokens`. Null if unavailable. |
+| `elapsed_ms` | `int` | Wall-clock time for the API call in milliseconds. |
+| `tokens_per_second` | `float \| null` | `completion_tokens / (elapsed_ms / 1000)`. Null if usage unavailable. |
+| `error` | `string \| null` | Error message if the call failed, otherwise null. |
 
 ## Default models (free)
 
@@ -91,28 +106,32 @@ responses = support_reply("How do I set up my profile?", mode="onboarding")
 
 You can override the model list via the API or config.
 
-## Project layout (planned)
+## Project layout
 
 ```
 backend/open_router/
-├── README.md           # This file
-├── REQUIREMENTS.md     # Project requirements
-├── requirements.txt    # Python dependencies
-├── .env.example       # Example env (no secrets)
+├── README.md            # This file
+├── API_REFERENCE.md     # Full HTTP API documentation
+├── POSTMAN_GUIDE.md     # Postman testing guide
+├── REQUIREMENTS.md      # Project requirements
+├── requirements.txt     # Python dependencies
+├── .env.example         # Example env (no secrets)
 ├── __init__.py
-├── config.py          # Env and model config
-├── client.py          # Open Router API client
-├── router.py          # Multi-model routing
-├── prompts.py         # System prompts (support, onboarding)
-└── cli.py             # CLI entrypoint
+├── config.py            # Env and model config
+├── client.py            # Open Router API client (timing + usage)
+├── router.py            # Multi-model routing
+├── prompts.py           # System prompts (support, onboarding)
+└── app.py               # FastAPI HTTP server
 ```
 
 ## Integration with the rest of the project
 
 - **Same repo**: Import `open_router` from `backend/open_router` (add `backend` to `PYTHONPATH` or install as package).
-- **Other services**: Call the Python functions directly, or add an HTTP layer (e.g. FastAPI) and call `POST /chat` with `prompt`, optional `mode`, optional `model_ids`.
+- **Other services**: Call the Python functions directly, or run the FastAPI server and call the HTTP endpoints.
 
 ## Documentation
 
+- **API reference**: See [API_REFERENCE.md](./API_REFERENCE.md).
+- **Postman guide**: See [POSTMAN_GUIDE.md](./POSTMAN_GUIDE.md).
 - **Requirements and scope**: See [REQUIREMENTS.md](./REQUIREMENTS.md).
 - **Open Router**: [API docs](https://openrouter.ai/docs), [free models](https://openrouter.ai/collections/free-models).
