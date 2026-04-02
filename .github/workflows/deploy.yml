@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-backend:
+    name: Deploy Backend to Railway
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy backend to Railway
+        run: railway up --service email-submission-backend
+        working-directory: src/email-submission-backend
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+  deploy-frontend:
+    name: Frontend Deploy (Vercel auto-handles)
+    runs-on: ubuntu-latest
+    needs: deploy-backend
+
+    steps:
+      - name: Confirm backend deployed first
+        run: echo "Backend deployed — Vercel will auto-deploy frontend via GitHub integration"

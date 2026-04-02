@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  frontend:
+    build:
+      context: ..
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "3001:3001"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8080
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ../src/email-submission-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=development
+      - PORT=8080
+    volumes:
+      - ../src/email-submission-backend:/app
+      # Mount SQLite db file as a named volume so it persists
+      - sqlite_data:/app/emails.db
+    env_file:
+      - ../src/email-submission-backend/.env
+
+volumes:
+  sqlite_data:
