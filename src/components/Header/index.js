@@ -178,8 +178,7 @@ const Headers = () => {
               LLM Playground
             </NavLink>
           </nav>
-          <div className={styles.details}>
-            
+          <div className={styles.details}>            
             {/* <div className={styles.contact}>
               {contact.map((x, index) => (
                 <div className={styles.element} key={index}>
