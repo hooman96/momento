@@ -55,10 +55,7 @@ try:
 except ImportError:
     HAS_PANDAS = False
 
-# ---------------------------------------------------------------------------
 # Logging setup
-# ---------------------------------------------------------------------------
-
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s  %(levelname)-8s  %(name)s  %(message)s",
@@ -70,10 +67,7 @@ logging.basicConfig(
 )
 log = logging.getLogger("cloud_infra_scraper")
 
-# ---------------------------------------------------------------------------
 # Constants
-# ---------------------------------------------------------------------------
-
 GITHUB_API = "https://api.github.com"
 GITHUB_GRAPHQL = "https://api.github.com/graphql"
 MAX_FILE_SIZE = 1_000_000  # 1 MB — skip anything larger
