@@ -3,7 +3,7 @@ import cn from "classnames";
 import styles from "./LLMPlayground.module.sass";
 
 const API_BASE = "http://localhost:8005";
-const LLM_PASSWORD = process.env.REACT_APP_LLM_PASSWORD || "momento2026";
+const LLM_PASSWORD = process.env.REACT_APP_LLM_PASSWORD;
 const AUTH_KEY = "llm_playground_auth";
 
 const LLMPlayground = () => {
