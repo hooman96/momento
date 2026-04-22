@@ -21,9 +21,14 @@ class LocalStorageProvider(StorageProvider):
         self.root.mkdir(parents=True, exist_ok=True)
 
     def _path(self, key: str) -> Path:
-        if not key or key.startswith("/") or ".." in key.split("/"):
+        if not key:
             raise ValueError(f"invalid key: {key!r}")
-        return self.root / key
+        candidate = (self.root / key).resolve()
+        try:
+            candidate.relative_to(self.root)
+        except ValueError as exc:
+            raise ValueError(f"invalid key: {key!r}") from exc
+        return candidate
 
     def put(self, key: str, value: bytes, content_type: Optional[str] = None) -> None:
         path = self._path(key)
