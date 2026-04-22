@@ -72,7 +72,7 @@ def complete(
             try:
                 body = e.response.json()
                 err_msg = body.get("error", {}).get("message", err_msg)
-            except Exception:
+            except (ValueError, TypeError):
                 pass
         return {
             "text": "",

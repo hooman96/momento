@@ -1,5 +1,6 @@
 """Multi-model routing: send one prompt to multiple Open Router models."""
 
+import time
 from typing import List, Optional
 
 from .client import complete
@@ -50,9 +51,32 @@ def route_prompt(
     """
     models = model_ids if model_ids is not None else DEFAULT_MODELS
     results = {}
+    max_attempts = 3
+    initial_backoff_s = 0.5
 
     for model_id in models:
-        out = complete(prompt, model_id, system_prompt=system_prompt)
+        out = {}
+        for attempt in range(max_attempts):
+            try:
+                out = complete(prompt, model_id, system_prompt=system_prompt)
+                # `complete` usually reports request failures via the "error"
+                # field. Retry transient failures with exponential backoff.
+                if out.get("error") and attempt < max_attempts - 1:
+                    time.sleep(initial_backoff_s * (2**attempt))
+                    continue
+                break
+            except Exception as exc:
+                if attempt < max_attempts - 1:
+                    time.sleep(initial_backoff_s * (2**attempt))
+                    continue
+                out = {
+                    "text": "",
+                    "usage": None,
+                    "elapsed_ms": 0,
+                    "tokens_per_second": None,
+                    "error": str(exc),
+                }
+
         results[model_id] = {
             "text": out.get("text") or "",
             "usage": out.get("usage"),

@@ -10,6 +10,8 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from typing import List, Optional
 
+from .exceptions import ObjectNotFoundError
+
 
 @dataclass
 class ObjectInfo:
@@ -59,5 +61,5 @@ class StorageProvider(ABC):
         try:
             self.get(key)
             return True
-        except Exception:
+        except ObjectNotFoundError:
             return False

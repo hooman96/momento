@@ -27,6 +27,7 @@ class AzureBlobStorageProvider(StorageProvider):
             )
         try:
             from azure.storage.blob import BlobServiceClient  # type: ignore
+            from azure.core.exceptions import ResourceExistsError  # type: ignore
         except ImportError as exc:  # pragma: no cover - import guard
             raise ProviderConfigError(
                 "azure-storage-blob is required; install `azure-storage-blob`"
@@ -36,8 +37,8 @@ class AzureBlobStorageProvider(StorageProvider):
         self._container = self._service.get_container_client(container)
         try:
             self._container.create_container()
-        except Exception:
-            # container probably already exists; ignore
+        except ResourceExistsError:
+            # Container already exists; no setup action needed.
             pass
 
     def put(self, key: str, value: bytes, content_type: Optional[str] = None) -> None:
