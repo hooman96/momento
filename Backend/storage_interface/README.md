@@ -27,15 +27,21 @@ between them per enterprise customer — without changing product code.
 Backend/storage_interface/
 ├── __init__.py          # public exports
 ├── base.py              # StorageProvider ABC + ObjectInfo dataclass
+├── base_async.py        # AsyncStorageProvider ABC (unified native async I/O)
 ├── exceptions.py        # StorageError, ObjectNotFoundError, ProviderConfigError
 ├── config.py            # env loading
 ├── factory.py           # get_provider("local"|"s3"|"gcs"|"azure")
+├── factory_async.py     # get_async_provider (s3|gcs|azure) for unified routes
+├── unified.py           # configured cloud ids for unified HTTP (always-on multi-cloud)
 ├── app.py               # FastAPI wrapper (Postman / curl testable)
 ├── providers/
 │   ├── local.py         # LocalStorageProvider
-│   ├── aws_s3.py        # S3StorageProvider
-│   ├── gcp_gcs.py       # GCSStorageProvider
-│   └── azure_blob.py    # AzureBlobStorageProvider
+│   ├── aws_s3.py        # S3StorageProvider (sync)
+│   ├── s3_aio.py        # S3AsyncStorageProvider (aioboto3)
+│   ├── gcp_gcs.py       # GCSStorageProvider (sync)
+│   ├── gcs_aio.py       # GCSAsyncStorageProvider (gcloud-aio-storage)
+│   ├── azure_blob.py    # AzureBlobStorageProvider (sync)
+│   └── azure_aio.py     # AzureAsyncBlobStorageProvider (azure.storage.blob.aio)
 ├── requirements.txt
 └── .env.example
 ```
@@ -72,14 +78,53 @@ Copy `.env.example` to **`.env` inside `Backend/storage_interface/`** and fill
 in credentials for the provider(s) you want to test. **This app only loads that
 file** — it does not read the Momento repo root `.env` or `Backend/.env`.
 
-Only the active provider's variables are required.
+For **`get_provider()` in Python**, only that provider's variables are required. For the
+**HTTP** `/objects/...` API, set env for **each cloud** you want in the unified set (below); the
+server never touches local disk over HTTP.
 
 | Provider | Required env vars |
 |---|---|
-| `local` | `STORAGE_LOCAL_ROOT` (optional; defaults to `.data/`) |
+| `local` | `STORAGE_LOCAL_ROOT` (optional; defaults to `.data/`) — **Python `get_provider("local")` only** |
 | `s3` | `AWS_S3_BUCKET`, `AWS_REGION` (+ AWS credentials via env / shared file / IAM) |
 | `gcs` | `GCP_GCS_BUCKET`, `GCP_PROJECT`, `GOOGLE_APPLICATION_CREDENTIALS` (or ADC) |
 | `azure` | `AZURE_BLOB_CONTAINER`, `AZURE_STORAGE_CONNECTION_STRING` |
+| *Unified HTTP* | Same as the three cloud rows: each configured cloud is included automatically. |
+
+## Unified multi-backend HTTP API
+
+`PUT` / `GET` / `DELETE` / `HEAD` on **`/objects/{key}`** always target **every** configured cloud
+(S3, GCS, Azure) in parallel. There is **no** `?provider=` query on these routes — that avoids
+accidentally writing or reading a single backend while others drift.
+
+**`GET /objects?unified_status=1`** (omit `prefix`) returns which provider ids are in the unified
+set and why others are skipped.
+
+**`GET /objects?prefix=...`** lists objects from **all** configured clouds in parallel and returns a
+**merged** key list (first-seen metadata wins per key). A **502** is returned if any backend's list
+call fails.
+
+| Method | URL | Purpose |
+|--------|-----|--------|
+| `GET` | `/objects?unified_status=1` | Which cloud ids are in the unified set and skip reasons |
+| `GET` | `/objects?prefix=` | Unified async list (merged keys across clouds) |
+| `PUT` | `/objects/{key}` | Same body to **every** included cloud; **200 only if all succeed**; rollback on partial failure |
+| `GET` | `/objects/{key}` | Read from **every** cloud; **200** only if bytes exist **everywhere** and **match** |
+| `DELETE` | `/objects/{key}` | Delete on **every** included cloud (missing key counts as success per store) |
+| `HEAD` | `/objects/{key}` | **200** only if the key exists on **every** included cloud |
+
+**Concurrency & async I/O:** calls use `asyncio.gather` with **native async** clients (`aioboto3`,
+`gcloud-aio-storage`, `azure.storage.blob.aio`) — no `asyncio.to_thread` on these paths. Wall time
+is near the **slowest** cloud. JSON responses include `unified: true`, `parallel: true`, and
+`async_io: true` where applicable. Successful **`GET` / `HEAD`** on a key add response header
+**`X-Unified-Async-IO: true`** (body is raw bytes on `GET`).
+
+On process shutdown, the app **closes** shared async clients (GCS aiohttp session, Azure transport)
+via FastAPI **lifespan**.
+
+**Server console:** unified `PUT` / `GET` / `DELETE` / `HEAD` log `[unified] ... e2e_ms=...`
+via **`print` (flushed)** and **`logging.getLogger("momento.storage_interface").info`**.
+
+If **no** cloud backends are configured, object routes return **503** with a short explanation.
 
 ## Adding credentials
 
@@ -99,7 +144,7 @@ No cloud credentials. Optional:
 |----------|---------|
 | `STORAGE_LOCAL_ROOT` | Directory where objects are stored as files. Default: `Backend/storage_interface/.data` |
 
-### AWS S3 (`STORAGE_PROVIDER=s3` or `?provider=s3`)
+### AWS S3 (`STORAGE_PROVIDER=s3` or `get_provider("s3")`)
 
 **1. Create a bucket** (S3 console) and note **region** (e.g. `us-east-2`).
 
@@ -149,7 +194,7 @@ and run `aws configure` once on the machine; boto3 reads
 aws s3 ls s3://YOUR_BUCKET/
 ```
 
-### GCP Cloud Storage (`STORAGE_PROVIDER=gcs` or `?provider=gcs`)
+### GCP Cloud Storage (`STORAGE_PROVIDER=gcs` or `get_provider("gcs")`)
 
 Uses **Application Default Credentials**. Pick **one** auth method.
 
@@ -188,7 +233,7 @@ empty if ADC is enough.
 gcloud storage ls gs://YOUR_BUCKET/
 ```
 
-### Azure Blob Storage (`STORAGE_PROVIDER=azure` or `?provider=azure`)
+### Azure Blob Storage (`STORAGE_PROVIDER=azure` or `get_provider("azure")`)
 
 1. Portal → **Storage accounts** → create or open an account.
 2. **Security + networking → Access keys** — copy **Connection string** (key1
@@ -232,69 +277,50 @@ Once running:
 
 ## Testing
 
-### 1. Pick a provider
+### 1. Prerequisites
 
-Every HTTP request supports a `?provider=` query parameter, which overrides
-`STORAGE_PROVIDER` from the `.env` file. Valid values: `local`, `s3`, `gcs`,
-`azure`.
-
-Examples:
-
-- `?provider=local` — filesystem, no credentials needed (sanity check)
-- `?provider=s3` — talks to AWS using your configured credentials and bucket
-- `?provider=gcs` — talks to GCP using ADC / service-account JSON
+The HTTP API is **unified-only**: configure **at least one** of S3 / GCS / Azure in
+`Backend/storage_interface/.env`. Local filesystem tests use **`get_provider("local")`**
+in Python, not these HTTP routes.
 
 ### 2. Postman
 
-A minimal workflow (each request targets `http://localhost:8100`):
+Base URL `http://localhost:8100` (adjust if needed):
 
 | # | Method | URL | Body | Notes |
 |---|---|---|---|---|
 | 1 | GET | `/health` | — | expect `{"status":"ok"}` |
-| 2 | GET | `/providers` | — | lists compiled-in providers |
-| 3 | PUT | `/objects/hello.txt?provider=local` | **Body → raw → Text**: `hello world` | stores plain text; server uses body as-is |
-| 4 | PUT | `/objects/runs/42/meta.json?provider=local` | **Body → raw → JSON**:<br>`{"value_text": "{\"ok\": true}", "content_type": "application/json"}` | JSON mode with `value_text` |
-| 5 | PUT | `/objects/logo.bin?provider=local` | **Body → raw → JSON**:<br>`{"value_base64": "aGVsbG8=", "content_type": "application/octet-stream"}` | JSON mode with base64 bytes |
-| 6 | GET | `/objects` | query: `prefix=runs/` | lists everything under `runs/` |
-| 7 | GET | `/objects/hello.txt?provider=local` | — | downloads the bytes (Postman shows raw text) |
-| 8 | HEAD | `/objects/hello.txt?provider=local` | — | 200 if present, 404 otherwise |
-| 9 | DELETE | `/objects/hello.txt?provider=local` | — | removes the key |
-
-Once the local flow works, change `?provider=` to `s3` or `gcs` and repeat to
-validate real cloud credentials.
-
-Tip: create a Postman **environment** with a `baseUrl` variable
-(`http://localhost:8100`) and a `provider` variable so each request can use
-`{{baseUrl}}/objects/{{key}}?provider={{provider}}`.
+| 2 | GET | `/providers` | — | `unified_includes` + `skips` |
+| 3 | GET | `/objects?unified_status=1` | — | which clouds are active |
+| 4 | PUT | `/objects/smoke/hello.txt` | **Body → raw → Text**: `hello world` | unified PUT JSON response |
+| 5 | PUT | `/objects/smoke/meta.json` | **Body → raw → JSON**: `{"value_text": "{}", "content_type": "application/json"}` | JSON body mode |
+| 6 | GET | `/objects?prefix=smoke/` | — | merged unified list JSON |
+| 7 | GET | `/objects/smoke/hello.txt` | — | raw bytes; check header `X-Unified-Async-IO: true` |
+| 8 | HEAD | `/objects/smoke/hello.txt` | — | 200 only if key exists on every cloud |
+| 9 | DELETE | `/objects/smoke/hello.txt` | — | unified delete JSON |
 
 ### 3. curl quick check
 
 ```bash
-# Local
-curl -X PUT  "http://localhost:8100/objects/hello.txt?provider=local"      --data "hello world" -H "Content-Type: text/plain"
-curl       "http://localhost:8100/objects/hello.txt?provider=local"
-curl       "http://localhost:8100/objects?prefix=&provider=local"
-curl -X DELETE "http://localhost:8100/objects/hello.txt?provider=local"
+curl "http://localhost:8100/objects?unified_status=1"
 
-# AWS S3 (after filling AWS_S3_BUCKET / credentials in .env)
-curl -X PUT  "http://localhost:8100/objects/smoke/test.txt?provider=s3"      --data "from-s3" -H "Content-Type: text/plain"
-curl       "http://localhost:8100/objects/smoke/test.txt?provider=s3"
-
-# GCP GCS
-curl -X PUT  "http://localhost:8100/objects/smoke/test.txt?provider=gcs"      --data "from-gcs" -H "Content-Type: text/plain"
-curl       "http://localhost:8100/objects/smoke/test.txt?provider=gcs"
+# Writes to every configured cloud (requires AWS/GCP/Azure env in .env)
+curl -X PUT "http://localhost:8100/objects/smoke/unified.txt" --data "hello-all" -H "Content-Type: text/plain"
+curl -i "http://localhost:8100/objects/smoke/unified.txt"
+curl "http://localhost:8100/objects?prefix=smoke/"
+curl -I "http://localhost:8100/objects/smoke/unified.txt"
+curl -X DELETE "http://localhost:8100/objects/smoke/unified.txt"
 ```
 
 ### 4. Acceptance checklist
 
-Before calling a provider "done," run this sequence against it and confirm all
-five pass:
+With **all** intended clouds configured, confirm:
 
-1. `PUT /objects/smoke/a.txt` → `200 {"ok": true, ...}`
-2. `GET /objects/smoke/a.txt` → `200` with the exact bytes sent
-3. `GET /objects?prefix=smoke/` → `count >= 1`, includes `smoke/a.txt`
-4. `DELETE /objects/smoke/a.txt` → `200`
-5. `GET /objects/smoke/a.txt` → `404 not found: smoke/a.txt`
+1. `PUT /objects/smoke/a.txt` → `200` and JSON `{"ok": true, "unified": true, "async_io": true, ...}`
+2. `GET /objects/smoke/a.txt` → `200` with the exact bytes; response includes `X-Unified-Async-IO: true`
+3. `GET /objects?prefix=smoke/` → JSON with `unified`, `async_io`, and merged `objects`
+4. `DELETE /objects/smoke/a.txt` → `200` and per-provider results
+5. `GET /objects/smoke/a.txt` → `404` (or `409` if drift) with JSON `detail` including `async_io`
 
 ### 5. Pre-flight credential checks (outside this service)
 
