@@ -18,6 +18,8 @@ from __future__ import annotations
 
 import asyncio
 import base64
+import binascii
+import json
 import logging
 import time
 from contextlib import asynccontextmanager
@@ -25,7 +27,7 @@ from typing import Any, List, Optional, Tuple
 
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.responses import JSONResponse, Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 
 from .base import ObjectInfo
 from .exceptions import ObjectNotFoundError
@@ -80,11 +82,23 @@ async def _read_put_body(
     ctype = request.headers.get("content-type", "").lower()
 
     if ctype.startswith("application/json"):
-        payload = PutRequest(**(await request.json()))
+        try:
+            raw = await request.json()
+        except json.JSONDecodeError as exc:
+            raise HTTPException(
+                status_code=400, detail=f"invalid json: {exc}"
+            ) from exc
+        try:
+            payload = PutRequest(**raw)
+        except ValidationError as exc:
+            raise HTTPException(
+                status_code=400,
+                detail={"message": "invalid request body", "errors": exc.errors()},
+            ) from exc
         if payload.value_base64 is not None:
             try:
                 data = base64.b64decode(payload.value_base64, validate=True)
-            except Exception as exc:
+            except (binascii.Error, ValueError) as exc:
                 raise HTTPException(status_code=400, detail=f"invalid base64: {exc}")
         elif payload.value_text is not None:
             data = payload.value_text.encode("utf-8")

@@ -80,5 +80,9 @@ class S3StorageProvider(StorageProvider):
         try:
             self._client.head_object(Bucket=self.bucket, Key=key)
             return True
-        except ClientError:
-            return False
+        except ClientError as exc:
+            code = exc.response.get("Error", {}).get("Code", "")
+            status = exc.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+            if code in ("NoSuchKey", "404", "NotFound") or status == 404:
+                return False
+            raise
