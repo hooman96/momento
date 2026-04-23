@@ -167,29 +167,18 @@ const Headers = () => {
           />
         </Link>
         <div className={cn(styles.wrap)}>
-          {/* <nav className={styles.nav}>
-            {navLinks.map((x, index) =>
-              x.content ? (
-                <DropdownMenu
-                  className={styles.group}
-                  item={x}
-                  key={index}
-                  setValue={setVisibleNav}
-                />
-              ) : (
-                <NavLink
-                  className={styles.link}
-                  activeClassName={styles.active}
-                  to={x.url}
-                  key={index}
-                  onClick={() => setVisibleNav(false)}
-                >
-                  {x.title}
-                </NavLink>
-              )
-            )}
-          </nav> */}
-          <div className={styles.details}>
+          <nav className={styles.nav}>
+            <NavLink
+              className={styles.link}
+              activeClassName={styles.active}
+              to='/llm'
+              style={{ color: "#23262F" }}
+              onClick={() => setVisibleNav(false)}
+            >
+              LLM Playground
+            </NavLink>
+          </nav>
+          <div className={styles.details}>            
             {/* <div className={styles.contact}>
               {contact.map((x, index) => (
                 <div className={styles.element} key={index}>

@@ -1,0 +1,18 @@
+# Core web + config
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+python-dotenv>=1.0
+
+# AWS S3
+boto3>=1.34
+# Async (unified HTTP I/O; aiobotocore under the hood)
+aioboto3>=12
+
+# GCP GCS
+google-cloud-storage>=2.16
+# Async (unified); aiohttp-based JSON API
+gcloud-aio-storage>=9
+
+# Azure Blob
+azure-storage-blob>=12.19

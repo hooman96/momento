@@ -1,0 +1,466 @@
+@import ../../styles/helpers
+
+.section
+    padding: 80px 0 120px
+    +m
+        padding: 48px 0 80px
+
+.container
+    max-width: 1280px
+
+.head
+    text-align: center
+    margin-bottom: 40px
+    +m
+        margin-bottom: 28px
+
+.stage
+    font-family: "TT Norms Bold"
+    font-size: 14px
+    text-transform: uppercase
+    letter-spacing: 1px
+    color: $neutrals4
+    margin-bottom: 12px
+
+.title
+    font-family: "New Spirit"
+    margin-bottom: 16px
+
+.gradient
+    background-color: #add8e6
+    background-image: linear-gradient(315deg, #add8e6 0%, #add3e6 85%)
+    background-size: 100%
+    -webkit-background-clip: text
+    -moz-background-clip: text
+    -webkit-text-fill-color: transparent
+    -moz-text-fill-color: transparent
+
+.subtitle
+    font-size: 18px
+    color: $neutrals4
+    max-width: 520px
+    margin: 0 auto
+    +m
+        font-size: 16px
+
+// ── Two-column layout ──
+.layout
+    display: grid
+    grid-template-columns: 380px 1fr
+    gap: 32px
+    align-items: start
+    +d
+        grid-template-columns: 340px 1fr
+    +t
+        grid-template-columns: 1fr
+        gap: 24px
+
+// ── Left panel ──
+.left
+    position: sticky
+    top: 24px
+    +t
+        position: static
+
+.form
+    background: rgba(255,255,255,0.06)
+    border: 1px solid $neutrals6
+    border-radius: 16px
+    padding: 28px
+    +dark
+        background: rgba(255,255,255,0.04)
+        border-color: $neutrals3
+    +m
+        padding: 20px
+
+.models
+    margin-bottom: 20px
+
+.modelsLabel
+    font-family: "TT Norms Bold"
+    font-size: 13px
+    text-transform: uppercase
+    letter-spacing: 0.5px
+    color: $neutrals4
+    margin-bottom: 10px
+
+.modelsList
+    display: flex
+    flex-wrap: wrap
+    gap: 8px
+
+.modelChip
+    cursor: pointer
+    input
+        display: none
+
+.chipInner
+    display: inline-flex
+    align-items: center
+    height: 34px
+    padding: 0 12px
+    border-radius: 17px
+    font-size: 12px
+    font-family: "TT Norms"
+    border: 1.5px solid $neutrals6
+    color: $neutrals4
+    transition: all .2s
+    user-select: none
+    +dark
+        border-color: $neutrals3
+    &:hover
+        border-color: $neutrals4
+        color: $neutrals2
+        +dark
+            color: $neutrals8
+
+.chipActive
+    background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%)
+    border-color: transparent
+    color: $neutrals8
+    &:hover
+        color: $neutrals8
+        border-color: transparent
+
+.toggleSystem
+    display: inline-block
+    background: none
+    border: none
+    font-family: "TT Norms"
+    font-size: 14px
+    color: $neutrals4
+    cursor: pointer
+    margin-bottom: 14px
+    padding: 0
+    transition: color .2s
+    &:hover
+        color: $neutrals2
+        +dark
+            color: $neutrals8
+
+.textarea
+    width: 100%
+    min-height: 60px
+    padding: 12px 14px
+    border-radius: 12px
+    border: 1.5px solid $neutrals6
+    background: $neutrals8
+    color: $neutrals2
+    font-family: "TT Norms"
+    font-size: 14px
+    line-height: 1.6
+    resize: vertical
+    outline: none
+    transition: border-color .2s
+    margin-bottom: 14px
+    +dark
+        background: $neutrals1
+        border-color: $neutrals3
+        color: $neutrals8
+    &:focus
+        border-color: #647dee
+    +placeholder
+        color: $neutrals5
+
+.mainInput
+    min-height: 140px
+
+.error
+    font-size: 14px
+    color: $red
+    margin-bottom: 12px
+
+.submit
+    width: 100%
+    height: 48px
+    border-radius: 24px
+    font-size: 15px
+    cursor: pointer
+    &:disabled
+        opacity: 0.5
+        cursor: not-allowed
+
+// ── Right panel ──
+.right
+    min-height: 300px
+
+.resultsHeader
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 16px
+
+.resultsTitle
+    font-family: "TT Norms Bold"
+    font-size: 18px
+    +dark
+        color: $neutrals8
+
+.resultsBadge
+    font-family: "TT Norms"
+    font-size: 12px
+    color: $neutrals4
+    background: $neutrals7
+    padding: 4px 10px
+    border-radius: 12px
+    +dark
+        background: $neutrals3
+
+.loader
+    display: flex
+    align-items: center
+    justify-content: center
+    gap: 12px
+    padding: 60px 0
+    font-size: 15px
+    color: $neutrals4
+
+.spinner
+    width: 22px
+    height: 22px
+    border: 3px solid $neutrals6
+    border-top-color: #647dee
+    border-radius: 50%
+    animation: spin 0.8s linear infinite
+    +dark
+        border-color: $neutrals3
+        border-top-color: #647dee
+
+@keyframes spin
+    to
+        transform: rotate(360deg)
+
+.empty
+    display: flex
+    align-items: center
+    justify-content: center
+    min-height: 240px
+    font-size: 15px
+    color: $neutrals5
+    border: 1.5px dashed $neutrals6
+    border-radius: 14px
+    text-align: center
+    padding: 24px
+    +dark
+        border-color: $neutrals3
+
+// ── Table ──
+.tableWrap
+    border: 1px solid $neutrals6
+    border-radius: 14px
+    overflow: hidden
+    +dark
+        border-color: $neutrals3
+
+.table
+    width: 100%
+    border-collapse: collapse
+
+    thead
+        background: $neutrals7
+        +dark
+            background: rgba(255,255,255,0.04)
+
+    th
+        font-family: "TT Norms Bold"
+        font-size: 12px
+        text-transform: uppercase
+        letter-spacing: 0.5px
+        color: $neutrals4
+        padding: 12px 20px
+        text-align: left
+        border-bottom: 1px solid $neutrals6
+        +dark
+            border-color: $neutrals3
+
+.thModel
+    width: 160px
+    +m
+        width: 120px
+
+.thResponse
+    width: auto
+
+.thStat
+    width: 100px
+    text-align: right
+    white-space: nowrap
+    +m
+        width: 80px
+
+.row
+    cursor: pointer
+    transition: background .15s
+    &:hover
+        background: rgba(100, 125, 238, 0.04)
+        +dark
+            background: rgba(100, 125, 238, 0.06)
+    &:not(:last-child)
+        td
+            border-bottom: 1px solid $neutrals6
+            +dark
+                border-color: $neutrals3
+
+.rowExpanded
+    background: rgba(100, 125, 238, 0.03)
+    +dark
+        background: rgba(100, 125, 238, 0.05)
+
+.rowError
+    background: rgba(255, 75, 75, 0.04)
+    +dark
+        background: rgba(255, 75, 75, 0.06)
+
+.tdModel
+    padding: 14px 20px
+    vertical-align: top
+
+.tdResponse
+    padding: 14px 20px
+    vertical-align: top
+
+.modelBadge
+    display: inline-block
+    font-family: "TT Norms Bold"
+    font-size: 12px
+    letter-spacing: 0.3px
+    background-image: linear-gradient(315deg, #7f53ac 0%, #647dee 74%)
+    background-size: 100%
+    -webkit-background-clip: text
+    -moz-background-clip: text
+    -webkit-text-fill-color: transparent
+    -moz-text-fill-color: transparent
+
+.preview
+    font-family: "TT Norms"
+    font-size: 13px
+    line-height: 1.6
+    color: $neutrals4
+
+.fullText
+    font-family: "TT Norms"
+    font-size: 13px
+    line-height: 1.7
+    white-space: pre-wrap
+    word-break: break-word
+    color: $neutrals2
+    max-height: 400px
+    overflow-y: auto
+    margin: 0
+    +dark
+        color: $neutrals5
+
+.errorText
+    font-family: "TT Norms"
+    font-size: 13px
+    line-height: 1.6
+    color: $red
+
+.tdStat
+    padding: 14px 20px
+    vertical-align: top
+    text-align: right
+    white-space: nowrap
+
+.statValue
+    font-family: "TT Norms Bold"
+    font-size: 13px
+    color: $neutrals2
+    +dark
+        color: $neutrals6
+
+.statUnit
+    font-family: "TT Norms"
+    font-size: 11px
+    color: $neutrals4
+
+.statNA
+    font-family: "TT Norms"
+    font-size: 13px
+    color: $neutrals5
+
+// ── Password gate ──
+.gateContainer
+    display: flex
+    align-items: center
+    justify-content: center
+    min-height: 60vh
+
+.gateCard
+    width: 100%
+    max-width: 380px
+    background: rgba(255,255,255,0.06)
+    border: 1px solid $neutrals6
+    border-radius: 20px
+    padding: 40px 32px
+    text-align: center
+    +dark
+        background: rgba(255,255,255,0.04)
+        border-color: $neutrals3
+    +m
+        padding: 32px 24px
+
+.gateIcon
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    width: 72px
+    height: 72px
+    border-radius: 50%
+    background: linear-gradient(315deg, rgba(127,83,172,0.12) 0%, rgba(100,125,238,0.12) 74%)
+    color: #647dee
+    margin-bottom: 20px
+    +dark
+        background: linear-gradient(315deg, rgba(127,83,172,0.2) 0%, rgba(100,125,238,0.2) 74%)
+
+.gateTitle
+    font-family: "TT Norms Bold"
+    font-size: 22px
+    margin-bottom: 8px
+    +dark
+        color: $neutrals8
+
+.gateSubtitle
+    font-family: "TT Norms"
+    font-size: 14px
+    color: $neutrals4
+    margin-bottom: 24px
+
+.gateInput
+    width: 100%
+    height: 48px
+    padding: 0 16px
+    border-radius: 24px
+    border: 1.5px solid $neutrals6
+    background: $neutrals8
+    color: $neutrals2
+    font-family: "TT Norms"
+    font-size: 15px
+    text-align: center
+    outline: none
+    transition: border-color .2s
+    margin-bottom: 16px
+    +dark
+        background: $neutrals1
+        border-color: $neutrals3
+        color: $neutrals8
+    &:focus
+        border-color: #647dee
+    +placeholder
+        color: $neutrals5
+
+.gateError
+    font-family: "TT Norms"
+    font-size: 14px
+    color: $red
+    margin-bottom: 12px
+
+.gateButton
+    width: 100%
+    height: 48px
+    border-radius: 24px
+    font-size: 15px
+    cursor: pointer
+    &:disabled
+        opacity: 0.5
+        cursor: not-allowed
